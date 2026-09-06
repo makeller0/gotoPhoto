@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, Smartphone, Check, ArrowRight, ShieldCheck, Download } from 'lucide-react';
+import { APP_VERSION } from '../version';
 
 interface InstallGuideModalProps {
   isOpen: boolean;
@@ -19,7 +20,12 @@ export const InstallGuideModal: React.FC<InstallGuideModalProps> = ({ isOpen, on
               <Smartphone className="w-3.5 h-3.5" />
             </div>
             <div>
-              <h3 className="font-semibold text-sm">安卓 App 安装与离线使用指南</h3>
+              <div className="flex items-center gap-1.5">
+                <h3 className="font-semibold text-sm">安卓 App 安装与离线使用指南</h3>
+                <span className="text-[10px] font-mono font-medium px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-300 border border-zinc-700/60">
+                  v{APP_VERSION}
+                </span>
+              </div>
               <p className="text-[10px] text-zinc-400 font-mono">PWA 渐进式安卓原生独立应用</p>
             </div>
           </div>
@@ -91,13 +97,16 @@ export const InstallGuideModal: React.FC<InstallGuideModalProps> = ({ isOpen, on
         </div>
 
         {/* Footer */}
-        <div className="pt-1">
+        <div className="pt-1 flex flex-col items-center gap-1.5">
           <button
             onClick={onClose}
             className="w-full h-8 px-3 rounded-md bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs shadow-sm transition-colors"
           >
             知道了，返回使用
           </button>
+          <div className="text-[10px] text-zinc-500 font-mono">
+            当前版本编号：v{APP_VERSION}
+          </div>
         </div>
       </div>
     </div>

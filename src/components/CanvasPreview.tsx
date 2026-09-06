@@ -231,17 +231,16 @@ export const CanvasPreview: React.FC<CanvasPreviewProps> = ({
                 onMouseUp={() => setIsComparingOriginal(false)}
                 onTouchStart={() => setIsComparingOriginal(true)}
                 onTouchEnd={() => setIsComparingOriginal(false)}
-                className={`h-6 flex items-center gap-1 px-2 rounded-md text-[11px] font-medium backdrop-blur shadow-sm transition-all select-none ${
+                className={`h-6 w-6 flex items-center justify-center rounded-md text-[11px] font-medium backdrop-blur shadow-sm transition-all select-none ${
                   isComparingOriginal
                     ? 'bg-amber-500 text-zinc-950 font-bold scale-95'
                     : isLight
                     ? 'bg-white/90 text-zinc-700 hover:text-black border border-zinc-300'
                     : 'bg-zinc-950/90 text-zinc-300 hover:text-white border border-zinc-800'
                 }`}
-                title="按住即可查看无水印原图"
+                title="按住即可对比查看原图"
               >
-                <Eye className="w-3 h-3" />
-                <span>对比原图</span>
+                <Eye className="w-3.5 h-3.5" />
               </button>
 
               {/* Reset Zoom */}
