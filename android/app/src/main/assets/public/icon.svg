@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e88e5" />
+      <stop offset="100%" stop-color="#0d47a1" />
+    </linearGradient>
+    <linearGradient id="stampGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff7043" />
+      <stop offset="100%" stop-color="#d84315" />
+    </linearGradient>
+  </defs>
+  <!-- App Icon rounded container -->
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)"/>
+  <!-- Decorative photo frame -->
+  <rect x="96" y="112" width="320" height="260" rx="24" fill="#ffffff" fill-opacity="0.15" stroke="#ffffff" stroke-width="8" stroke-dasharray="16 8"/>
+  <circle cx="160" cy="180" r="32" fill="#ffffff" fill-opacity="0.6"/>
+  <path d="M120 330 L220 230 L280 290 L340 210 L400 330 Z" fill="#ffffff" fill-opacity="0.5"/>
+  <!-- Stamp / Watermark Badge -->
+  <g transform="translate(256, 320) rotate(-15)">
+    <rect x="-140" y="-45" width="280" height="90" rx="16" fill="url(#stampGrad)" stroke="#ffffff" stroke-width="6"/>
+    <text x="0" y="12" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, Roboto, sans-serif" font-size="36" font-weight="900" text-anchor="middle" letter-spacing="4">WATERMARK</text>
+  </g>
+</svg>
