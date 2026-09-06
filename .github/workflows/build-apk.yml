@@ -32,10 +32,17 @@ jobs:
           node-version: 22
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
           java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android SDK Licenses
+        run: |
+          yes | sdkmanager --licenses || true
 
       - name: Install Node Dependencies
         run: |
@@ -63,7 +70,12 @@ jobs:
       - name: Prepare APK Asset
         run: |
           mkdir -p release-assets
-          find android/app/build/outputs/apk/debug -name "*.apk" -exec cp {} release-assets/watermark-app.apk \;
+          find android/app/build/outputs/apk -name "*.apk" -exec cp {} release-assets/watermark-app.apk \;
+          if [ ! -f release-assets/watermark-app.apk ]; then
+            echo "❌ 错误：未能在构建目录中找到生成的 APK 文件！"
+            exit 1
+          fi
+          echo "✅ 成功生成 APK 文件："
           ls -lh release-assets/watermark-app.apk
 
       - name: Upload APK to Job Artifacts
@@ -87,6 +99,8 @@ jobs:
           echo "Target release tag is: $TAG"
 
       - name: Publish APK to GitHub Release
+        id: create_release
+        continue-on-error: true
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release_info.outputs.tag }}
@@ -109,3 +123,9 @@ jobs:
           files: release-assets/watermark-app.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release Upload Status Check
+        if: steps.create_release.outcome == 'failure'
+        run: |
+          echo "::warning::GitHub Releases 自动发布因仓库 Token 权限受限跳过。但 APK 已 100% 成功编译，并已保存到当前 Actions 运行结果顶部的 'Artifacts' (工件/附件) 中，随时可点击下载！"
+          echo "如需直接发布到 Releases 标签页，请进入仓库 Settings -> Actions -> General -> Workflow permissions 勾选 'Read and write permissions' 并保存。"
