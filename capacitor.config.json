@@ -1,0 +1,6 @@
+{
+  "appId": "com.gotophoto.watermark",
+  "appName": "水印添加器",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
