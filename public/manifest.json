@@ -1,0 +1,19 @@
+{
+  "name": "水印添加器",
+  "short_name": "水印大师",
+  "description": "专为安卓与移动端打造的专业照片水印添加应用",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#121212",
+  "theme_color": "#1976d2",
+  "categories": ["photography", "utilities"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
