@@ -1,6 +1,10 @@
 {
   "name": "水印添加器",
   "description": "专为安卓与移动设备打造的专业照片水印添加应用，支持全屏平铺水印、证件防盗用标记、自定义文字及图片水印与批量高清导出。",
-  "requestFramePermissions": ["camera"],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
