@@ -26,7 +26,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js 22 (LTS)
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -37,12 +37,8 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Accept Android SDK Licenses
-        run: |
-          yes | sdkmanager --licenses || true
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Install Node Dependencies
         run: |
@@ -55,7 +51,7 @@ jobs:
       - name: Initialize & Sync Capacitor Android
         run: |
           if [ ! -d "android" ]; then
-            echo "Initializing Android platform with Capacitor..."
+            echo "Android directory not found, adding platform..."
             npx cap add android
           fi
           echo "Syncing web assets to native Android project..."
@@ -64,6 +60,7 @@ jobs:
       - name: Build Android Debug APK
         run: |
           cd android
+          sed -i 's/\r$//' gradlew
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon --stacktrace
 
@@ -72,7 +69,7 @@ jobs:
           mkdir -p release-assets
           find android/app/build/outputs/apk -name "*.apk" -exec cp {} release-assets/watermark-app.apk \;
           if [ ! -f release-assets/watermark-app.apk ]; then
-            echo "❌ 错误：未能在构建目录中找到生成的 APK 文件！"
+            echo "❌ 错误：未能找到生成的 APK 文件！"
             exit 1
           fi
           echo "✅ 成功生成 APK 文件："
