@@ -50,26 +50,46 @@ jobs:
 
       - name: Initialize & Sync Capacitor Android
         run: |
-          if [ ! -d "android" ]; then
-            echo "Android directory not found, adding platform..."
+          # 如果 android 目录不存在或者缺少 gradlew，则重新完整生成
+          if [ ! -f "android/gradlew" ]; then
+            echo "⚠️ 检测到 android/gradlew 缺失，正在由 Capacitor 完整初始化 Android 工程..."
+            rm -rf android
             npx cap add android
+          else
+            echo "✅ 检测到现有的 Android 工程，正在同步 Web 资源与插件..."
+            npx cap sync android
           fi
-          echo "Syncing web assets to native Android project..."
-          npx cap sync android
+
+          # 确保 gradlew 存在；如果仍不存在则通过 gradle wrapper 补全
+          if [ ! -f "android/gradlew" ]; then
+            echo "正在自动补充 Gradle Wrapper 脚本..."
+            cd android
+            gradle wrapper || true
+            cd ..
+          fi
+
+          echo "Android 目录文件状态："
+          ls -la android
 
       - name: Build Android Debug APK
         run: |
           cd android
-          sed -i 's/\r$//' gradlew
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          if [ -f "gradlew" ]; then
+            sed -i 's/\r$//' gradlew
+            chmod +x gradlew
+            ./gradlew assembleDebug --no-daemon --stacktrace
+          else
+            echo "未找到 gradlew，使用系统环境 gradle 编译..."
+            gradle assembleDebug --no-daemon --stacktrace
+          fi
 
       - name: Prepare APK Asset
         run: |
           mkdir -p release-assets
           find android/app/build/outputs/apk -name "*.apk" -exec cp {} release-assets/watermark-app.apk \;
           if [ ! -f release-assets/watermark-app.apk ]; then
-            echo "❌ 错误：未能找到生成的 APK 文件！"
+            echo "❌ 错误：未能找到生成的 APK 文件！搜索现有 apk："
+            find android -name "*.apk" || true
             exit 1
           fi
           echo "✅ 成功生成 APK 文件："
