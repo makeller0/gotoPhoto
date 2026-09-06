@@ -21,7 +21,6 @@ export default function App() {
   const [isPhoneFrame, setIsPhoneFrame] = useState<boolean>(true);
   const [isExportOpen, setIsExportOpen] = useState<boolean>(false);
   const [isInstallGuideOpen, setIsInstallGuideOpen] = useState<boolean>(false);
-  const [currentTimeStr, setCurrentTimeStr] = useState<string>('09:41');
 
   const handleToggleTheme = () => {
     setTheme((prev) => {
@@ -30,23 +29,6 @@ export default function App() {
       return next;
     });
   };
-
-  // Live system clock for simulated Android status bar
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setCurrentTimeStr(
-        now.toLocaleTimeString('zh-CN', {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-        })
-      );
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 10000);
-    return () => clearInterval(timer);
-  }, []);
 
   // Preload a demo ID card sample on initial load so user sees full live functionality immediately
   useEffect(() => {
@@ -213,16 +195,7 @@ export default function App() {
               }`
         }`}
       >
-        {/* Simulated Android Front Camera / Punch Hole for Phone Frame */}
-        {isPhoneFrame && (
-          <div className={`hidden md:flex justify-center pt-1.5 pb-0.5 ${isLight ? 'bg-zinc-100' : 'bg-zinc-950'}`}>
-            <div className={`w-3.5 h-3.5 rounded-full ring-1 flex items-center justify-center ${isLight ? 'bg-zinc-300 ring-zinc-400' : 'bg-black ring-zinc-800'}`}>
-              <div className={`w-1 h-1 rounded-full ${isLight ? 'bg-zinc-500' : 'bg-zinc-800'}`}></div>
-            </div>
-          </div>
-        )}
-
-        {/* Top Header & Status Bar */}
+        {/* Top Header */}
         <AndroidHeader
           isPhoneFrame={isPhoneFrame}
           onTogglePhoneFrame={() => setIsPhoneFrame((v) => !v)}
@@ -231,7 +204,6 @@ export default function App() {
           onOpenInstallGuide={() => setIsInstallGuideOpen(true)}
           hasImages={images.length > 0}
           imageCount={images.length}
-          currentTimeStr={currentTimeStr}
           theme={theme}
           onToggleTheme={handleToggleTheme}
         />
